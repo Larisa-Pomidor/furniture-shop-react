@@ -1,0 +1,40 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Кресло со стульчиком",
+            "price": "7500",
+            "label": "Новинка",
+            "category": {
+                "id": 1,
+                "name": "Мебель"
+            },
+            "image": "item-1.jpg",
+            "description": ""
+        },
+        {
+            "id": 2,
+            "name": "Крісло зі стільчиком",
+            "price": "7500",
+            "label": "Новинка",
+            "category": {
+                "id": 1,
+                "name": "Мебель"
+            },
+            "image": "item-1.jpg",
+            "description": ""
+        },
+        {
+            "id": 3,
+            "name": "Крісло зі стільчиком",
+            "price": "7500",
+            "label": "Новинка",
+            "category": {
+                "id": 1,
+                "name": "Мебель"
+            },
+            "image": "item-1.jpg",
+            "description": ""
+        }
+    ]
+}

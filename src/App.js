@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { React } from 'react';
 
-function App() {
+import Header from './components/Header.jsx'
+import Home from './components/Home.jsx'
+import Shop from './components/Shop.jsx'
+import Footer from './components/Footer.jsx'
+
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./assets/css/App.css"
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom';
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: grey[900],
+    },
+    secondary: {
+      main: '#11cb5f',
+    },
+  },
+});
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <header>
+          <Header />
+        </header>
+
+        <main >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/#about" element={<Header />} />
+          </Routes>
+        </main>
+        <footer>
+          <Footer />
+        </footer>
+      </Router>
+    </ThemeProvider>
   );
 }
 
