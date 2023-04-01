@@ -21,19 +21,19 @@ const Shop = () => {
     const [category, setCategory] = useState(
         [{
             "id": 1, "name": 'Декор', "checked": true, "amount": products.reduce(
-                (acc, cur) => cur.category.id == 1 ? acc + 1 : 0,
+                (acc, cur) => cur.category.id === 1 ? acc + 1 : 0,
                 0
             )
         },
         {
             "id": 2, "name": 'Мебель', "checked": true, "amount": products.reduce(
-                (acc, cur) => cur.category.id == 2 ? acc + 1 : 0,
+                (acc, cur) => cur.category.id === 2 ? acc + 1 : 0,
                 0
             )
         },
         {
             "id": 3, "name": 'Освещение', "checked": true, "amount": products.reduce(
-                (acc, cur) => cur.category.id == 3 ? acc + 1 : 0,
+                (acc, cur) => cur.category.id === 3 ? acc + 1 : 0,
                 0
             )
         }]);
@@ -64,9 +64,13 @@ const Shop = () => {
 
         filtered = filtered
             .slice(0)
-            .filter(item => category.find(cat => cat.id == item.category.id).checked == true)
+            .filter(item => category.find(cat => cat.id === item.category.id).checked === true)
 
         setFilteredProducts(filtered);
+    }
+
+    const resetProducts = () => {
+        setFilteredProducts(products)
     }
 
     const handleSearchChange = (value) => {
@@ -87,14 +91,14 @@ const Shop = () => {
     const handleChangeSort = (value) => {
         let sortType = value.target.value;
         setSort(sortType);
-        if (sortType == 1) {
+        if (sortType === 1) {
             let filtered = filteredProducts.slice(0).sort((a, b) => {
                 return b.price - a.price;
             });
             setFilteredProducts(filtered);
         }
 
-        else if (sortType == 2) {
+        else if (sortType === 2) {
             let filtered = filteredProducts.slice(0).sort((a, b) => {
                 return a.price - b.price;
             });
@@ -118,7 +122,7 @@ const Shop = () => {
                 <div className="main__shop-block">
                     <div className="sidebar">
                         <div className="sidebar__inner">
-                            <div className="sidebar__reset">
+                            <div className="sidebar__reset" onClick={resetProducts}>
                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                     <use href={sprite + "#reset"} />
                                 </svg>
@@ -175,7 +179,7 @@ const Shop = () => {
                         <div className="shop__inner">
                             <div className="shop__controll">
                                 <div className="shop__show">
-                                    Показано 12 результатов из 35
+                                    Показано {filteredProducts.length} товаров
                                 </div>
                                 <div className="shop__sort">
                                     <FormControl className="shop__sort-form">
@@ -196,14 +200,14 @@ const Shop = () => {
                                 {
                                     filteredProducts.map((item, key) =>
                                         <div className="shop__item" key={key}>
-                                            <div className="shop__label shop__label_sale">{item.label}</div>
+                                            <div className={"shop__label shop__label_sale " + (item.label === '' ? 'none' : '')}>{item.label}</div>
                                             <div className="shop__favorite">
                                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                                     <use href={sprite + "#heart"} />
                                                 </svg>
                                             </div>
                                             <div className="shop__image">
-                                                <img src={"./" + item.image} alt="" />
+                                                <img src={"./products/" + item.image} alt="" />
                                             </div>
                                             <div className="shop__data">
                                                 <div className="shop__data-text">

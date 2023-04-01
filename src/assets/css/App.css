@@ -452,3 +452,7 @@ li {
     letter-spacing: 2px;
     font-size: 16px;
 }
+
+.shop__label.none {
+    display: none;
+}

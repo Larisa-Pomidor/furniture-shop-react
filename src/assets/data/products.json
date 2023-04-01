@@ -14,26 +14,98 @@
         },
         {
             "id": 2,
-            "name": "Крісло зі стільчиком",
-            "price": 7500,
-            "label": "Новинка",
+            "name": "Персиковый столик",
+            "price": 800,
+            "label": "",
             "category": {
                 "id": 1,
                 "name": "Мебель"
             },
-            "image": "item-1.jpg",
+            "image": "item-2.jpg",
             "description": ""
         },
         {
             "id": 3,
-            "name": "Крісло зі стільчиком",
-            "price": 500,
+            "name": "Кресло с подушкой",
+            "price": 3250,
             "label": "Новинка",
             "category": {
                 "id": 1,
                 "name": "Мебель"
             },
-            "image": "item-1.jpg",
+            "image": "item-3.jpg",
+            "description": ""
+        },
+        {
+            "id": 4,
+            "name": "Черное зеркало",
+            "price": 2800,
+            "label": "",
+            "category": {
+                "id": 2,
+                "name": "Декор"
+            },
+            "image": "item-4.jpg",
+            "description": ""
+        },
+        {
+            "id": 5,
+            "name": "Круглое зеркало",
+            "price": 3200,
+            "label": "Скидка",
+            "category": {
+                "id": 2,
+                "name": "Декор"
+            },
+            "image": "item-5.jpg",
+            "description": ""
+        },
+        {
+            "id": 6,
+            "name": "Коврик для душа",
+            "price": 233,
+            "label": "",
+            "category": {
+                "id": 2,
+                "name": "Декор"
+            },
+            "image": "item-6.jpg",
+            "description": ""
+        },
+        {
+            "id": 7,
+            "name": "Лампа-ночник",
+            "price": 500,
+            "label": "Новинка",
+            "category": {
+                "id": 3,
+                "name": "Освещение"
+            },
+            "image": "item-7.jpg",
+            "description": ""
+        },
+        {
+            "id": 8,
+            "name": "Гирлянда",
+            "price": 650,
+            "label": "",
+            "category": {
+                "id": 3,
+                "name": "Освещение"
+            },
+            "image": "item-8.jpg",
+            "description": ""
+        },
+        {
+            "id": 9,
+            "name": "Чёрный торшер",
+            "price": 850,
+            "label": "Скидка",
+            "category": {
+                "id": 3,
+                "name": "Освещение"
+            },
+            "image": "item-9.jpg",
             "description": ""
         }
     ]
