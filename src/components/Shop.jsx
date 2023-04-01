@@ -20,27 +20,29 @@ const Shop = () => {
 
     const [category, setCategory] = useState(
         [{
-            "id": 1, "name": 'Декор', "checked": 0, "amount": products.reduce(
+            "id": 1, "name": 'Декор', "checked": true, "amount": products.reduce(
                 (acc, cur) => cur.category.id == 1 ? acc + 1 : 0,
                 0
             )
         },
         {
-            "id": 2, "name": 'Мебель', "checked": 0, "amount": products.reduce(
+            "id": 2, "name": 'Мебель', "checked": true, "amount": products.reduce(
                 (acc, cur) => cur.category.id == 2 ? acc + 1 : 0,
                 0
             )
         },
         {
-            "id": 3, "name": 'Освещение', "checked": 0, "amount": products.reduce(
+            "id": 3, "name": 'Освещение', "checked": true, "amount": products.reduce(
                 (acc, cur) => cur.category.id == 3 ? acc + 1 : 0,
                 0
             )
         }]);
 
-    const [sliderPrice, setSliderPrice] = useState([20, 37]);
+    const [sliderPrice, setSliderPrice] = useState([]);
     const [searchValue, setSearchValue] = useState('');
-    const [sort, setSort] = useState(0);
+    const [sort, setSort] = useState('');
+
+    const [priceBound, setPriceBound] = useState([]);
 
     let tempPrice = sliderPrice
     let tempMatch = searchValue
@@ -52,14 +54,17 @@ const Shop = () => {
     };
 
     const globalFilter = () => {
-        let filtered = products.slice(0).filter(item => item.price > tempPrice[0] && item.price < tempPrice[1]);
-        console.log(tempMatch)
+        let filtered = products.slice(0).filter(item => item.price >= tempPrice[0] && item.price <= tempPrice[1]);
         filtered = filtered
             .slice(0)
             .filter(item =>
                 item.name.toLowerCase().includes(tempMatch.toLowerCase()) ||
                 item.description.toLowerCase().includes(tempMatch.toLowerCase())
             )
+
+        filtered = filtered
+            .slice(0)
+            .filter(item => category.find(cat => cat.id == item.category.id).checked == true)
 
         setFilteredProducts(filtered);
     }
@@ -76,14 +81,35 @@ const Shop = () => {
             if (element.id === id) element.checked = value.target.checked;
         });
         setCategory(categoryChanged);
+        globalFilter();
     };
 
     const handleChangeSort = (value) => {
-        setSort(value.target.value);
+        let sortType = value.target.value;
+        setSort(sortType);
+        if (sortType == 1) {
+            let filtered = filteredProducts.slice(0).sort((a, b) => {
+                return b.price - a.price;
+            });
+            setFilteredProducts(filtered);
+        }
+
+        else if (sortType == 2) {
+            let filtered = filteredProducts.slice(0).sort((a, b) => {
+                return a.price - b.price;
+            });
+            setFilteredProducts(filtered);
+        }
     };
 
     useEffect(() => {
+        const max = Math.max(...filteredProducts.map(item => item.price))
+        const min = Math.min(...filteredProducts.map(item => item.price))
+        setPriceBound([min, max])
+        setSliderPrice([min, max])
+        tempPrice = [min, max]
 
+        globalFilter();
     }, []);
 
     return (
@@ -115,8 +141,8 @@ const Shop = () => {
                                         value={sliderPrice}
                                         onChange={handleSliderChange}
                                         valueLabelDisplay="auto"
-                                        min={20}
-                                        max={10000}
+                                        min={priceBound[0]}
+                                        max={priceBound[1]}
                                     />
                                 </div>
                             </div>
@@ -156,12 +182,12 @@ const Shop = () => {
                                         <InputLabel>Сортировка</InputLabel>
                                         <Select
                                             checked={0}
-                                            onChange={handleChangeCheck}
+                                            onChange={handleChangeSort}
                                             label="Сортировка"
+                                            value={sort}
                                         >
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
+                                            <MenuItem value={1}>По цене вниз</MenuItem>
+                                            <MenuItem value={2}>По цене вверх</MenuItem>
                                         </Select>
                                     </FormControl>
                                 </div>
@@ -176,7 +202,7 @@ const Shop = () => {
                                                     <use href={sprite + "#heart"} />
                                                 </svg>
                                             </div>
-                                            <div class="shop__image">
+                                            <div className="shop__image">
                                                 <img src={"./" + item.image} alt="" />
                                             </div>
                                             <div className="shop__data">
