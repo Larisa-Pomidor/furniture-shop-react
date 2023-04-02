@@ -3,6 +3,7 @@ import { React } from 'react';
 import Header from './components/Header.jsx'
 import Home from './components/Home.jsx'
 import Shop from './components/Shop.jsx'
+import Product from './components/Product.jsx'
 import Footer from './components/Footer.jsx'
 
 
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/#about" element={<Header />} />
+            <Route path="/product" element={<Product />} />
           </Routes>
         </main>
         <footer>

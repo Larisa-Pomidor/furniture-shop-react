@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import Container from 'react-bootstrap/Container';
 import Slider from '@mui/material/Slider';
 import Select from '@mui/material/Select';
@@ -9,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
-import products_data from '../assets/data/products.json';
+import products_data from '../assets/data/products.json?2';
 
 import sprite from '../assets/img/ico-sprite.svg';
 
@@ -70,7 +71,11 @@ const Shop = () => {
     }
 
     const resetProducts = () => {
-        setFilteredProducts(products)
+        setFilteredProducts(products);
+        setSliderPrice(priceBound);
+        setSearchValue('')
+        category.slice(0).forEach(cat => cat.checked = true)
+        setCategory(category)
     }
 
     const handleSearchChange = (value) => {
@@ -209,21 +214,23 @@ const Shop = () => {
                                             <div className="shop__image">
                                                 <img src={"./products/" + item.image} alt="" />
                                             </div>
-                                            <div className="shop__data">
-                                                <div className="shop__data-text">
-                                                    <div className="shop__data-name">
-                                                        {item.name}
+                                            <Link to="/product" state={{ product: item }} >
+                                                <div className="shop__data">
+                                                    <div className="shop__data-text">
+                                                        <div className="shop__data-name">
+                                                            {item.name}
+                                                        </div>
+                                                        <div className="shop__data-price">
+                                                            {item.price + " " + currency}
+                                                        </div>
                                                     </div>
-                                                    <div className="shop__data-price">
-                                                        {item.price + " " + currency}
+                                                    <div className="shop__cart">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24">
+                                                            <use href={sprite + "#bag"} />
+                                                        </svg>
                                                     </div>
                                                 </div>
-                                                <div className="shop__cart">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24">
-                                                        <use href={sprite + "#bag"} />
-                                                    </svg>
-                                                </div>
-                                            </div>
+                                            </Link>
                                         </div>
                                     )
                                 }
