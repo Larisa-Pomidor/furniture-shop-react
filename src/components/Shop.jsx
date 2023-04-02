@@ -19,6 +19,12 @@ const Shop = () => {
     const products = products_data.products.slice(0);
     const [filteredProducts, setFilteredProducts] = useState(products_data.products.slice(0));
 
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [cartLength, setCartLength] = useState(JSON.parse(localStorage.getItem('cart-length')) || 0);
+
+    const [favorite, setFavorite] = useState(JSON.parse(localStorage.getItem('favorite')) || []);
+    const [favoriteLength, setFavoriteLength] = useState(JSON.parse(localStorage.getItem('favorite-length')) || 0);
+
     const [category, setCategory] = useState(
         [{
             "id": 1, "name": 'Декор', "checked": true, "amount": products.reduce(
@@ -111,6 +117,41 @@ const Shop = () => {
         }
     };
 
+    const addToCart = (item) => {
+        const i = cart.findIndex(e => e.id === item.id);
+        if (i > -1) {
+            cart[i].qty++;
+        }
+        else {
+            cart.push({
+                id: item.id,
+                name: item.name,
+                qty: 1,
+                price: item.price,
+                image: item.image
+            })
+        }
+        setCart(cart);
+        setCartLength(cart.length)
+    }
+
+
+    const toggleFavorite = (item) => {
+        const i = favorite.findIndex(e => e.id === item.id);
+        if (i > -1) {
+            favorite = favorite.slice(0).filter(fav => fav.id != item.id)
+        }
+        else {
+            favorite.push({
+                id: item.id,
+                name: item.name,
+                image: item.image
+            })
+        }
+        setFavorite(favorite);
+        setFavoriteLength(favorite.length)
+    }
+
     useEffect(() => {
         const max = Math.max(...filteredProducts.map(item => item.price))
         const min = Math.min(...filteredProducts.map(item => item.price))
@@ -120,6 +161,16 @@ const Shop = () => {
 
         globalFilter();
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart))
+        localStorage.setItem("cart-length", JSON.stringify(cart.length))
+    }, [cartLength]);
+
+    useEffect(() => {
+        localStorage.setItem("favorite", JSON.stringify(favorite))
+        localStorage.setItem("favorite-length", JSON.stringify(favorite.length))
+    }, [favoriteLength]);
 
     return (
         <div className="main main-shop">
@@ -206,7 +257,8 @@ const Shop = () => {
                                     filteredProducts.map((item, key) =>
                                         <div className="shop__item" key={key}>
                                             <div className={"shop__label shop__label_sale " + (item.label === '' ? 'none' : '')}>{item.label}</div>
-                                            <div className="shop__favorite">
+                                            <div className={'shop__favorite ' + (favorite.findIndex(e => e.id === item.id) > -1 ? 'active' : '')}
+                                                onClick={() => toggleFavorite(item)}>
                                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                                     <use href={sprite + "#heart"} />
                                                 </svg>
@@ -214,8 +266,9 @@ const Shop = () => {
                                             <div className="shop__image">
                                                 <img src={"./products/" + item.image} alt="" />
                                             </div>
-                                            <Link to="/product" state={{ product: item }} >
-                                                <div className="shop__data">
+
+                                            <div className="shop__data">
+                                                <Link to="/product" state={{ product: item }} >
                                                     <div className="shop__data-text">
                                                         <div className="shop__data-name">
                                                             {item.name}
@@ -224,13 +277,13 @@ const Shop = () => {
                                                             {item.price + " " + currency}
                                                         </div>
                                                     </div>
-                                                    <div className="shop__cart">
-                                                        <svg width="24" height="24" viewBox="0 0 24 24">
-                                                            <use href={sprite + "#bag"} />
-                                                        </svg>
-                                                    </div>
+                                                </Link>
+                                                <div className="shop__cart" onClick={() => addToCart(item)}>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24">
+                                                        <use href={sprite + "#bag"} />
+                                                    </svg>
                                                 </div>
-                                            </Link>
+                                            </div>
                                         </div>
                                     )
                                 }

@@ -27,7 +27,7 @@ const Header = () => {
     return (
         <Navbar bg="light" expand="lg" className={"w-100 position-fixed " + (scrollTop == 1 ? 'active' : '')} >
             <Container>
-                <Navbar.Brand>Vivo Furniture</Navbar.Brand>
+                <Navbar.Brand><Link to="/" >Vivo Furniture</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
                     <Nav className="gap-5 mx-auto">
@@ -43,19 +43,23 @@ const Header = () => {
                                 <use href={sprite + "#account"} />
                             </svg>
                         </div>
-                        <div className="header__controll-item header__controll-item_cart">
-                            <svg width="24" height="24" viewBox="0 0 24 24">
-                                <use href={sprite + "#cart"} />
-                            </svg>
-                            <div className="header__cart-number">
-                                0
+                        <Link to="/cart" >
+                            <div className="header__controll-item header__controll-item_cart">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <use href={sprite + "#cart"} />
+                                </svg>
+                                <div className="header__cart-number">
+                                    0
+                                </div>
                             </div>
-                        </div>
-                        <div className="header__controll-item header__controll-item_favorite">
-                            <svg width="24" height="24" viewBox="0 0 24 24">
-                                <use href={sprite + "#heart"} />
-                            </svg>
-                        </div>
+                        </Link>
+                        <Link to="/favorite" >
+                            <div className="header__controll-item header__controll-item_favorite">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <use href={sprite + "#heart"} />
+                                </svg>
+                            </div>
+                        </Link>
                     </Stack>
                 </Navbar.Collapse>
             </Container>

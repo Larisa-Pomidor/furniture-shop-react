@@ -1,17 +1,7 @@
-import { React, useEffect, useState } from 'react';
+import { React, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Slider from '@mui/material/Slider';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 
 import { useLocation } from 'react-router-dom'
-
-import sprite from '../assets/img/ico-sprite.svg';
 
 const Product = () => {
     const productData = useLocation()
@@ -58,7 +48,7 @@ const Product = () => {
                                     </div>
                                 </div>
                                 <div className="product__button">
-                                    Add to Cart
+                                    Добавить в корзину
                                 </div>
                             </div>
                         </div>
