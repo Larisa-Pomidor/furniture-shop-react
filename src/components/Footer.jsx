@@ -11,7 +11,7 @@ const Footer = () => (
     <div className="footer__outer">
         <Container>
             <div className="footer__inner">
-                <Stack direction="horizontal" gap={5} className="align-items-start">
+                <Stack direction="horizontal" gap={5} className="footer__stack align-items-start">
                     <Col>
                         <div className="logo">
                             Vivo Furniture

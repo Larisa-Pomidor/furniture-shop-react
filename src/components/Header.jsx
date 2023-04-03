@@ -1,14 +1,18 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Stack from 'react-bootstrap/Stack';
 import Navbar from 'react-bootstrap/Navbar';
+import { FavoriteContext, CartContext } from "../Helper/Context.js"
 
 import sprite from '../assets/img/ico-sprite.svg';
 
 const Header = () => {
     const [scrollTop, setScrollTop] = useState(0);
+
+    const {cartLength, setCartLength} = useContext(CartContext);
+    const {favoriteLength, setFavoriteLength} = useContext(FavoriteContext);
 
     const handleScroll = () => {
         window.scrollY > 20 ? setScrollTop(1) : setScrollTop(0)
@@ -48,8 +52,8 @@ const Header = () => {
                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                     <use href={sprite + "#cart"} />
                                 </svg>
-                                <div className="header__cart-number">
-                                    0
+                                <div className="header__number header__cart-number">
+                                    {cartLength}
                                 </div>
                             </div>
                         </Link>
@@ -58,6 +62,9 @@ const Header = () => {
                                 <svg width="24" height="24" viewBox="0 0 24 24">
                                     <use href={sprite + "#heart"} />
                                 </svg>
+                                <div className="header__number header__favorite-number">
+                                    {favoriteLength}
+                                </div>
                             </div>
                         </Link>
                     </Stack>

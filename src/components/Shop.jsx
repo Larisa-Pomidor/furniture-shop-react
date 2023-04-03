@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useContext } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
 import Container from 'react-bootstrap/Container';
 import Slider from '@mui/material/Slider';
@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 
+import { FavoriteContext, CartContext } from "../Helper/Context.js"
 import products_data from '../assets/data/products.json?2';
 
 import sprite from '../assets/img/ico-sprite.svg';
@@ -19,11 +20,11 @@ const Shop = () => {
     const products = products_data.products.slice(0);
     const [filteredProducts, setFilteredProducts] = useState(products_data.products.slice(0));
 
-    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-    const [cartLength, setCartLength] = useState(JSON.parse(localStorage.getItem('cart-length')) || 0);
-
     const [favorite, setFavorite] = useState(JSON.parse(localStorage.getItem('favorite')) || []);
-    const [favoriteLength, setFavoriteLength] = useState(JSON.parse(localStorage.getItem('favorite-length')) || 0);
+    const {favoriteLength, setFavoriteLength} = useContext(FavoriteContext);
+
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const {cartLength, setCartLength} = useContext(CartContext);
 
     const [category, setCategory] = useState(
         [{
@@ -138,18 +139,17 @@ const Shop = () => {
 
     const toggleFavorite = (item) => {
         const i = favorite.findIndex(e => e.id === item.id);
+        let favoriteSlice = favorite.slice(0)
         if (i > -1) {
-            favorite = favorite.slice(0).filter(fav => fav.id != item.id)
+            favoriteSlice = favorite.filter(fav => fav.id != item.id)
+            setFavorite(favoriteSlice)
+            setFavoriteLength(favoriteSlice.length)
         }
         else {
-            favorite.push({
-                id: item.id,
-                name: item.name,
-                image: item.image
-            })
+            favorite.push(item)
+            setFavoriteLength(favorite.length)
+            setFavorite(favorite)
         }
-        setFavorite(favorite);
-        setFavoriteLength(favorite.length)
     }
 
     useEffect(() => {
@@ -163,13 +163,11 @@ const Shop = () => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(cart))
-        localStorage.setItem("cart-length", JSON.stringify(cart.length))
+       localStorage.setItem("cart", JSON.stringify(cart))
     }, [cartLength]);
 
     useEffect(() => {
-        localStorage.setItem("favorite", JSON.stringify(favorite))
-        localStorage.setItem("favorite-length", JSON.stringify(favorite.length))
+       localStorage.setItem("favorite", JSON.stringify(favorite))
     }, [favoriteLength]);
 
     return (

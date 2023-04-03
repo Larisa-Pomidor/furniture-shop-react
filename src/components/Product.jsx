@@ -1,14 +1,40 @@
-import { React, useState } from 'react';
+import { React, useState, useContext, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 
 import { useLocation } from 'react-router-dom'
+import { CartContext } from "../Helper/Context.js"
 
 const Product = () => {
     const productData = useLocation()
     const { product } = productData.state
     const currency = "грн."
 
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const { cartLength, setCartLength } = useContext(CartContext);
+
     const [amount, setAmount] = useState(1);
+
+    const addToCart = (item) => {
+        const i = cart.findIndex(e => e.id === item.id);
+        let tempCart = cart.slice(0)
+        if (i > -1) {
+            tempCart[i].qty = tempCart[i].qty + amount;
+        }
+        else {
+            tempCart.push({
+                id: item.id,
+                name: item.name,
+                qty: amount,
+                price: item.price,
+                image: item.image
+            })
+        }
+        console.log(tempCart)
+        setCart(tempCart);
+        setCartLength(tempCart.length)
+        localStorage.setItem("cart", JSON.stringify(tempCart))
+    }
+
     return (
         <div className="product">
             <div className="product__outer">
@@ -28,7 +54,7 @@ const Product = () => {
                                 ★★★★★
                             </div>
                             <div className="product__price">
-                                {product.price + " " + currency }
+                                {product.price + " " + currency}
                             </div>
                             <div className="product__desc">
                                 {product.description}
@@ -47,7 +73,7 @@ const Product = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="product__button">
+                                <div className="product__button" onClick={() => addToCart(product)}>
                                     Добавить в корзину
                                 </div>
                             </div>

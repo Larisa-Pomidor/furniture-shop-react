@@ -1,11 +1,13 @@
-import { React, useState, useEffect } from 'react';
+import { React, useEffect, useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
+import { HashLink as Link } from 'react-router-hash-link';
+import { FavoriteContext} from "../Helper/Context.js"
 
 import sprite from '../assets/img/ico-sprite.svg';
 
 const Favorite = () => {
     const [favorite, setFavorite] = useState(JSON.parse(localStorage.getItem('favorite')) || []);
-    const [favoriteLength, setFavoriteLength] = useState(JSON.parse(localStorage.getItem('favorite-length')) || 0);
+    const {favoriteLength, setFavoriteLength} = useContext(FavoriteContext);
 
     const removeItem = (id) => {
         let minFavorite = favorite.filter(item => item.id != id);
@@ -15,7 +17,6 @@ const Favorite = () => {
 
     useEffect(() => {
         localStorage.setItem("favorite", JSON.stringify(favorite))
-        localStorage.setItem("favorite-length", JSON.stringify(favorite.length))
     }, [favoriteLength]);
     return (
         <div className="favorite">
@@ -41,9 +42,11 @@ const Favorite = () => {
                                     <div className="favorite__image">
                                         <img src={"./products/" + item.image} alt="" />
                                     </div>
-                                    <div className="favorite__name">
-                                        {item.name}
-                                    </div>
+                                    <Link to="/product" state={{ product: item }} >
+                                        <div className="favorite__name">
+                                            {item.name}
+                                        </div>
+                                    </Link>
                                 </div>
                             )
                         }

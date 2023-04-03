@@ -1,9 +1,10 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
+import { CartContext } from "../Helper/Context.js"
 
 const Cart = () => {
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
-    const [cartLength, setCartLength] = useState(JSON.parse(localStorage.getItem('cart-length')) || 0);
+    const {cartLength, setCartLength} = useContext(CartContext);
 
     const currency = "грн."
 
@@ -11,26 +12,25 @@ const Cart = () => {
         let minCart = cart.filter(item => item.id != id);
         setCart(minCart)
         setCartLength(minCart.length)
+        localStorage.setItem("cart", JSON.stringify(minCart))
     }
 
     const plusQty = (id) => {
         const i = cart.findIndex(e => e.id === id);
-        cart[i].qty++;
-        setCart(cart);
-        setCartLength(cartLength => cartLength + 1)
+        let tempCart = cart.slice(0);
+        tempCart[i].qty++;
+        setCart(tempCart);
+        localStorage.setItem("cart", JSON.stringify(tempCart))
     }
 
     const minusQty = (id) => {
         const i = cart.findIndex(e => e.id === id);
-        cart[i].qty--;
-        setCart(cart);
-        setCartLength(cartLength => cartLength + 1)
+        let tempCart = cart.slice(0);
+        tempCart[i].qty--;
+        setCart(tempCart);
+        localStorage.setItem("cart", JSON.stringify(tempCart))
     }
 
-    useEffect(() => {
-        localStorage.setItem("cart", JSON.stringify(cart))
-        localStorage.setItem("cart-length", JSON.stringify(cart.length))
-    }, [cartLength]);
     return (
         <div className="cart">
             <div className="cart__outer">
