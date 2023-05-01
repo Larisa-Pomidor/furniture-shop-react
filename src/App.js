@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 import Header from './components/Header.jsx'
 import Home from './components/Home.jsx'
@@ -34,8 +34,16 @@ const theme = createTheme({
 
 const App = () => {
 
-  const [favoriteLength, setFavoriteLength] = useState(JSON.parse(localStorage.getItem('favorite')).length);
-  const [cartLength, setCartLength] = useState(JSON.parse(localStorage.getItem('cart')).length);
+  const [favoriteLength, setFavoriteLength] = useState(0);
+  const [cartLength, setCartLength] = useState(0);
+
+  useEffect(() => {
+    if (!localStorage.getItem('favorite')) localStorage.setItem("favorite", JSON.stringify([]));
+    if (!localStorage.getItem('cart')) localStorage.setItem("cart", JSON.stringify([]));
+
+    setFavoriteLength(JSON.parse(localStorage.getItem('favorite')).length);
+    setCartLength(JSON.parse(localStorage.getItem('cart')).length);
+}, [favoriteLength, cartLength]);
 
   return (
     <CartContext.Provider value={{ cartLength, setCartLength }}>
